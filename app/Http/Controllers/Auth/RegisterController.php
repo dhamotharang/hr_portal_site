@@ -28,7 +28,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/employees';
 
     /**
      * Create a new controller instance.
@@ -49,13 +49,14 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            // 'name' => [ 'string', 'max:255'],
+            // 'email' => [ 'string', 'email', 'max:255', 'unique:users'],
+            // 'password' => ['required', 'string', 'min:5', 'confirmed'],
             'mobile' => [ 'max:255'],
-            'emp_group' => [ 'max:255'],
-            'employe_access' => [ 'string'],
-            'title' => [ 'string'],
+            'emp_group' => ['required', 'max:255'],
+            'employe_access' => ['required', 'string'],
+            // 'title' => [ 'string'],
+            'employee_code' =>['required', 'string','max:20', 'unique:users'],
             
         ]);
     }
@@ -68,32 +69,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // if($request->hasFile('pp'))
-        // {
-        //     // $file = $request->file('pp');
-        //     // $ext = $file->getClientOriginalExtension();
-        //     // $file_name = 'user_image' . '_' . time() . '.' . $ext ;
-        //     // $file->storeAs('public/userImages' , $file_name);
-        //     //dd($path1);
-
-        //     $file = $data->file('pp');
-        //     $ext = $file->getClientOriginalExtension();
-        //     $file_name = 'user_image' . '_' . time() . '.' . $ext ;
-        //     $file->storeAs('public/userImages' , $file_name);
-        // }
-        // else
-        // {
-        //     $file_name1 = 'NoImage.png';
-        // }
         return User::create([
             'name' => $data['name'],
+            'username'=>$data['employee_code'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => Hash::make($data['employee_code']),
             'mobile' => $data['mobile'],
             'Djv_Group' => $data['emp_group'],
             'Djv_Access' => $data['employe_access'],
             'title' => $data['title'],
-            'user_pp' =>'NoImage.png'
-        ]);
+            'user_pp' =>'NoImage.png',
+            'employee_code' =>$data['employee_code'],
+        ])->with('status','User was added successfully!');
     }
 }

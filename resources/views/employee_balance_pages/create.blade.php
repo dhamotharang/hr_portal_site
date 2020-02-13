@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div style="background-color: #707CD2; color:cornsilk" class="card-header d-flex justify-content-center">{{ __('Add new Employee Balance') }}</div>
+                <div style="color:cornsilk" class="card-header d-flex justify-content-center bg-dark">{{ __('Add new Employee Balance') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{url('employees_balance/'.$id)}}">
@@ -61,7 +61,7 @@
                         <!--ttttttttttt-->                        
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-dark">
                                     {{ __('Add') }}
                                 </button>
                             </div>

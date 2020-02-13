@@ -4,6 +4,8 @@
 
 <!-- ============================================================== -->
 <!-- Example -->
+
+
 <!-- ============================================================== -->
 <div class="col-12">
     <div class="card">
@@ -57,7 +59,7 @@
                     </div>
                     
                 </section>
-                <!-- Step 2 -->
+                {{-- <!-- Step 2 -->
                 <h6>Password</h6>
                 <section >
                     <div class="form-group row d-flex justify-content-center">
@@ -81,7 +83,7 @@
                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
                         </div>
                     </div>
-                </section>
+                </section> --}}
                 <!-- Step 3 -->
                 <h6>Group and Access</h6>
                 <section>
@@ -90,7 +92,7 @@
                     <div class="form-group row d-flex justify-content-center">
                         <label for="group">{{ __('Group') }}</label>
                         <div class="col-md-6">
-                        <select class="mdb-select  md-outline colorful-select dropdown-primary form-control" name="emp_group" id="emp_group">
+                        <select class="mdb-select  md-outline colorful-select dropdown-primary form-control" name="emp_group" id="emp_group" >
                             @php
                                 $all_groups = DB::select('select * from  djv_groups order by id desc'); 
                             @endphp
@@ -116,14 +118,24 @@
     
                         </div>
                     </div>
+
+               <!--ttttttttttt-->
+                <div  class="form-group row d-flex justify-content-center">
+                    <label for="employee_code">{{ __('Code') }}</label>
+                    <div style="margin-left: 5px" class="col-md-6">
+                        <input style="margin-right: 2px" id="employee_code" type="text" class="form-control" name="employee_code" >
+                    </div>
+                </div>
                 
                 <!--ttttttttttt-->
                 <div class="form-group row d-flex justify-content-center">
                         <label for="title">{{ __('title') }}</label>
-                        <div class="col-md-6">
+                        <div style="margin-left: 10px" class="col-md-6">
                             <input id="title" type="text" class="form-control" name="title" >
                         </div>
                     </div>
+
+
                 </section>
                 
             </form>

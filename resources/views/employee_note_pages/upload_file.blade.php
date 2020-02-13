@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header d-flex justify-content-center">{{ __('Import Employee Notification CSV File') }}</div>
+                <div style="color:cornsilk" class="card-header d-flex justify-content-center bg-dark">{{ __('Import Employee Notification CSV File') }}</div>
 
                 <div class="card-body">
                 <form method="POST" enctype="multipart/form-data" action="{{url('/upload_note')}}">
@@ -18,7 +18,7 @@
                                <input type="file" name="upload_file" />
                               </td>
                               <td width="30%" align="left">
-                               <input type="submit" name="upload" class="btn btn-primary" value="Upload">
+                               <input type="submit" name="upload" class="btn btn-dark" value="Upload">
                               </td>
                              </tr>
                 

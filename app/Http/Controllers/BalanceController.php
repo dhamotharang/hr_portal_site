@@ -10,6 +10,10 @@ use App\employee_balance;
 
 class BalanceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     //Add new Balance
     public function create_balance($id)
     {
@@ -45,49 +49,49 @@ class BalanceController extends Controller
     public function user_index()
     {
         
-        $all_users = DB::table('users')->select('id','name' , 'email' , 'mobile' , 'Djv_Group' , 'Djv_Access' , 'title','user_pp')->orderBy('ID')->get();
+        $all_users = DB::table('users')->select('id','name' , 'email' , 'mobile' , 'Djv_Group' , 'Djv_Access' , 'title','user_pp','employee_code')->orderBy('ID')->get();
         // $all_users = User::orderBy('id' , 'desc')->paginate(5);
         $count = $all_users->count();
         return view('employee_balance_pages.index' , compact('all_users' , 'count'));
     }
 
-
-
-    //store user Page
-    public function search(Request $request)
-    {
-        $emp_name = $request->name;
-        $emp_email =$request->email;
-        $emp_mobile = $request->mobile;
-        $emp_group = $request->emp_group;
-        $dataarr = array(
-            'name' => $emp_name,
-            'email' => $request->email,
-            'mobile' => $request->mobile,
-            'Djv_Group' => $request->emp_group,
-        );
-        $sql = '';
-        foreach ($dataarr as $key => $item) {
-
-            if($dataarr[$key]){
-
-                $sql .= $key . ' Like ' . "'%" .$dataarr[$key] .  "%' and";
+        //store user Page
+        public function search(Request $request)
+        {
+            $emp_name = $request->name;
+            $emp_email =$request->email;
+            $emp_mobile = $request->mobile;
+            $emp_group = $request->emp_group;
+            $emp_code = $request->employee_code;
+            $dataarr = array(
+                'name' => $emp_name,
+                'email' => $request->email,
+                'mobile' => $request->mobile,
+                'Djv_Group' => $request->emp_group,
+                'employee_code' =>$request->employee_code,
+            );
+            $sql = '';
+            foreach ($dataarr as $key => $item) {
+    
+                if($dataarr[$key]){
+    
+                    $sql .= $key . ' Like ' . "'%" .$dataarr[$key] .  "%' and";
+                }
             }
+            $last3char = substr($sql, -3);
+            if(strtolower($last3char) == 'and'){
+                $sql = substr_replace($sql ,"",-3);
+            }
+            if($sql != ""){
+                $all_users =  DB::select('select * from users where '.$sql.' order by id desc');
+            }else{
+                $all_users =  DB::select('select * from users order by id desc');
+            }
+           return view('employee_balance_pages.index' , compact('all_users' , 'count'));
+    
+            //return redirect('/home')->with('status' , 'User Added Successfully !');
+    
         }
-        $last3char = substr($sql, -3);
-        if(strtolower($last3char) == 'and'){
-            $sql = substr_replace($sql ,"",-3);
-        }
-        if($sql != ""){
-            $all_users =  DB::select('select * from users where '.$sql.' order by id desc');
-        }else{
-            $all_users =  DB::select('select * from users order by id desc');
-        }
-        return view('employee_balance_pages.index' , compact('all_users' , 'count'));
-
-        //return redirect('/home')->with('status' , 'User Added Successfully !');
-
-    }
 
 
     public function store_balance(Request $request,$id)
@@ -138,6 +142,9 @@ class BalanceController extends Controller
 
    public function storeData(Request $request)
    {
+    
+    if( $request->file('upload_file')) {
+
        //get file
        $upload =$request->file('upload_file');
        $filePath = $upload->getRealPath();
@@ -167,33 +174,48 @@ class BalanceController extends Controller
            }
 
            //trim data
-
-        // foreach ($columns as $key => &$value) 
-        // {
-        //    $value = preg_replace('/\D/' , '' , $value);
-
-        // }
-
         $data = array_combine($escapedHeader , $columns);
 
-        //$emp_name = $data['name'];
-        $emp_email = $data['email'];
+
+        $emp_code = $data['code'];
         $annual_leave = $data['annualleave'];
         $sick_leave =$data['sickleave'];
 
-        $emp_id = DB::table('users')->select('id')->where('email', '=', $emp_email)->value('id');
+        $emp_id = DB::table('users')->select('id')->where('employee_code', '=', $emp_code)->value('id');
+        $check_user_count = DB::table('users')->where('employee_code', $emp_code)->count();
 
+        if($check_user_count > 0)
+        {
+            $check_user_balance_count = DB::table('employee_balances')->where('emp_id', $emp_id)->count();
 
-        $uploaded_emp_balance = new employee_balance();
-    
-        $uploaded_emp_balance->annual_leave = $annual_leave;
-        $uploaded_emp_balance->sick_leave = $sick_leave;
-        $uploaded_emp_balance->emp_id = $emp_id;
-        $uploaded_emp_balance->save();
+            if($check_user_balance_count > 0)
+            {
+                DB::table('employee_balances')->where('emp_id', $emp_id)->update(
+                    ['annual_leave'=> $annual_leave ,
+                    'sick_leave'=> $sick_leave,
+                    'emp_id'=> $emp_id ,
+                    ]
+                );
+
+            }else
+            {
+                $uploaded_emp_balance = new employee_balance();
         
+                $uploaded_emp_balance->annual_leave = $annual_leave;
+                $uploaded_emp_balance->sick_leave = $sick_leave;
+                $uploaded_emp_balance->emp_id = $emp_id;
+                $uploaded_emp_balance->save();
+            }
 
+        }
+        else{
+            return redirect('/employees_balance/search_balance')->with('status' , 'may one or more employee code not valid try again please!');
+        }
        }
        return redirect('/employees_balance/search_balance')->with('status' , 'Employees balance file uploaded Successfully !');
-
+    }else
+    {
+        return redirect()->back()->with('status' , 'No File Selected !');
+    }
    }
 }

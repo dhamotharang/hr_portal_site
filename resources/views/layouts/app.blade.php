@@ -26,9 +26,9 @@
 </style>
 <body>
     <div id="app">
-        <nav class="navbar top-navbar navbar-expand-md navbar-dark bg-primary">
+        <nav class="navbar top-navbar navbar-expand-md navbar-dark">
             <div class="container">
-                <a style="margin-left: 45% ; color:#fff" class="navbar-brand" href="{{ url('/') }}">
+                <a style="margin-left: 45% ; color:#000; font-weight: bold;font-family: Arial" class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'HR Portal') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -46,13 +46,13 @@
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
-                                <a style="color: #fff" class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <a style="; color:#000; font-weight: bold;font-family: Arial" class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
-                            {{-- @if (Route::has('register'))
+                            @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a style="; color:#000; font-weight: bold;font-family: Arial" class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                                 </li>
-                            @endif --}}
+                            @endif
                         @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -76,6 +76,8 @@
                 </div>
             </div>
         </nav>
+
+        <hr/>
 
         <main class="py-4">
             @yield('content')

@@ -53,6 +53,8 @@ Route::post('/upload_balance', 'BalanceController@storeData');
 //---------------------------------------------------------------------------------------------------
 //Add new Employee notification
 
+Route::get('/employees_notify/group_notification', 'NotificationController@group_notification_show')->name('employee_note.group_show');
+Route::post('/employees_notify/group_notification', 'NotificationController@group_notification_add')->name('employee_note.group_add');
 
 Route::get('/employees_notify/search_notification', 'NotificationController@user_index')->name('employee_note.index_users');
 Route::get('/employees_notify/{id}', 'NotificationController@show_employee_notes')->name('employee_note.edit');
@@ -93,6 +95,9 @@ Route::put('/generaklNotifications/{id}', 'GeneralNotificationController@update_
 //tickets-----
 Route::resource('tickets' ,'TicketsController');
 
+//complain-----
+Route::resource('complains' ,'ComplainController');
+//-------------
 
 Auth::routes();
 

@@ -8,95 +8,109 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div style="background-color: #707CD2; color:cornsilk" class="card-header d-flex justify-content-center">{{ __('Search Employee Notification') }}</div>
+                <div style="color:cornsilk" class="card-header d-flex justify-content-center bg-dark">{{ __('Search Employee Notification') }}</div>
 
                 <div class="card-body">
-                        {{-- {{route('employee_balance.search')}} --}}
-                <form method="POST" action="{{route('employee_note.search')}}">
-                        @csrf
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}"  autofocus>
-
-                                @if ($errors->has('name'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('name') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" >
-
-                                @if ($errors->has('email'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('mobile') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="mobile" value="{{ old('phone') }}" >
-
-                                @if ($errors->has('phone'))
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('phone') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-
-                        <!-- testtttttt-->
-
-                        <div class="form-group row">
-                                <label for="group" class="col-md-4 col-form-label text-md-right">{{ __('Group') }}</label>
+                        <form method="POST" action="{{route('employee_note.search')}}">
+                            @csrf
+                            <div class="form-group row">
+                                <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+    
                                 <div class="col-md-6">
-                                <select class="mdb-select  md-outline colorful-select dropdown-primary form-control" name="emp_group" id="emp_group">
-                                    @php
-                                        $all_groups = DB::select('select * from  djv_groups order by id desc'); 
-                                    @endphp
-                                        <option value="" disabled selected>Choose Group</option>
-                                        @foreach ($all_groups as $group)
-                                        <option value={{$group->group_name}}>{{$group->group_name}}</option>
-                                        @endforeach
-                                      </select> 
-          
+                                    <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}"  autofocus>
+    
+                                    @if ($errors->has('name'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('name') }}</strong>
+                                        </span>
+                                    @endif
                                 </div>
                             </div>
-                        
-
-                        
-                        <!--ttttttttttt-->                        
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Search') }}
-                                </button>
+    
+                            <div class="form-group row">
+                                <label for="code" class="col-md-4 col-form-label text-md-right">{{ __('Code') }}</label>
+    
+                                <div class="col-md-6">
+                                    <input id="employee_code" type="text" class="form-control{{ $errors->has('employee_code') ? ' is-invalid' : '' }}" name="employee_code" value="{{ old('employee_code') }}"  autofocus>
+    
+                                    @if ($errors->has('code'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('code') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
                             </div>
-                        </div>
-                    </form>
+    
+                            <div class="form-group row">
+                                <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+    
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" >
+    
+                                    @if ($errors->has('email'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('email') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+    
+                            <div class="form-group row">
+                                <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('mobile') }}</label>
+    
+                                <div class="col-md-6">
+                                    <input id="phone" type="text" class="form-control{{ $errors->has('phone') ? ' is-invalid' : '' }}" name="mobile" value="{{ old('phone') }}" >
+    
+                                    @if ($errors->has('phone'))
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $errors->first('phone') }}</strong>
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+    
+    
+                            <!-- testtttttt-->
+    
+                            <div class="form-group row">
+                                    <label for="group" class="col-md-4 col-form-label text-md-right">{{ __('Group') }}</label>
+                                    <div class="col-md-6">
+                                    <select class="mdb-select  md-outline colorful-select dropdown-primary form-control" name="emp_group" id="emp_group">
+                                        @php
+                                            $all_groups = DB::select('select * from  djv_groups order by id desc'); 
+                                        @endphp
+                                            <option value="" disabled selected>Choose Group</option>
+                                            @foreach ($all_groups as $group)
+                                            <option value={{$group->group_name}}>{{$group->group_name}}</option>
+                                            @endforeach
+                                          </select> 
+              
+                                    </div>
+                                </div>
+                            
+    
+                            
+                            <!--ttttttttttt-->                        
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4">
+                                    <button type="submit" class="btn btn-dark">
+                                        {{ __('Search') }}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<table class="table table-striped" style="background-color:lavender">
-    <thead style="background-color: #707CD2; color:cornsilk">
+<table class="table table-striped table-dark">
+    <thead style="background-color: #302523; color:cornsilk">
       <tr>
         <th scope="col">#</th>
         <th scope="col">Name</th>
+        <th scope="col">Code</th>
         <th scope="col">mobile</th>
         <th scope="col">Group</th>
         <th scope="col">Role</th>
@@ -112,6 +126,7 @@
       <tr>
         <th scope="row"><?php echo $c ?></th>
         <td><img width="50" height="50" src="{{asset('storage/EmployeeProfileImages/'. $user->user_pp)}}" style="border-radius: 50px;margin-right: 5px">{{$user->name}}</td>
+        <td>{{$user->employee_code}}</td>
         <td>{{$user->mobile}}</td>
         <td>{{$user->Djv_Group}}</td>
         <td>{{$user->Djv_Access}}</td>

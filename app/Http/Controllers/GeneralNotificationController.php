@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 class GeneralNotificationController extends Controller
 {
+    
     public function index()
     {
         //$all_general_notes = DB::table('general_notes')->select('*')->orderBy('id')->get();

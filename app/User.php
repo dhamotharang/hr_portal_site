@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'mobile' , 'Djv_Group' , 'Djv_Access' , 'title','user_pp'
+        'name', 'email', 'password', 'mobile' , 'Djv_Group' , 'Djv_Access' , 'title','user_pp','employee_code','username'
     ];
 
     /**
@@ -36,4 +36,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function complains()
+    {
+        return $this->hasMany(complain::class);
+    }
 }

@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header d-flex justify-content-center">{{ __('Edit General Notification') }}</div>
+                <div style="color:cornsilk" class="card-header d-flex justify-content-center bg-dark">{{ __('Edit General Notification') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{'/HR_Portal/public/generaklNotifications/'.$note->id}}" enctype="multipart/form-data">
@@ -67,7 +67,7 @@
                         <!--ttttttttttt-->                        
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-dark">
                                     {{ __('Edit') }}
                                 </button>
                             </div>

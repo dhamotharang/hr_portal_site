@@ -6,15 +6,21 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+
 use DB;
 
 class EmployeesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     // //index page
     public function index()
     {
         
-        $all_users = DB::table('users')->select('id','name' , 'email' , 'mobile' , 'Djv_Group' , 'Djv_Access' , 'title','user_pp')->orderBy('id')->get();
+        $all_users = DB::table('users')->select('id','name' , 'email' , 'mobile' , 'Djv_Group' , 'Djv_Access' , 'title','user_pp','employee_code')->orderBy('id')->get();
         // $all_users = User::orderBy('id' , 'desc')->paginate(5);
         $count = $all_users->count();
         return view('employee_pages.index' , compact('all_users' , 'count'));
@@ -26,11 +32,13 @@ class EmployeesController extends Controller
         $emp_email =$request->email;
         $emp_mobile = $request->mobile;
         $emp_group = $request->emp_group;
+        $emp_code = $request->employee_code;
         $dataarr = array(
             'name' => $emp_name,
             'email' => $request->email,
             'mobile' => $request->mobile,
             'Djv_Group' => $request->emp_group,
+            'employee_code' =>$request->employee_code,
         );
         $sql = '';
         foreach ($dataarr as $key => $item) {
@@ -80,9 +88,18 @@ class EmployeesController extends Controller
             $file_name = $user->user_pp;
         }
 
+        if($request->password === $user->password)
+        {
+            $updatedPassword=$user->password;
+        }else{
+            $updatedPassword=Hash::make($request->password);
+        }
+
         DB::table('users')->where('id', $id)->update(
             ['name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
+            'password' => $updatedPassword,
             'mobile' => $request->mobile,
             'Djv_Group' => $request->emp_group,
             'user_pp' => $file_name, ]
@@ -114,6 +131,7 @@ class EmployeesController extends Controller
    
    public function storeData(Request $request)
    {
+    if( $request->file('upload_file')) {
        //get file
        $upload =$request->file('upload_file');
        $filePath = $upload->getRealPath();
@@ -132,11 +150,12 @@ class EmployeesController extends Controller
            array_push($escapedHeader , $escapedItem);
        }
 
-       //dd($escapedHeader);
 
        //loading other columns
        while($columns=fgetcsv($file))
        {
+        $uploaded_emp = new User();
+
            if($columns[0] == "")
            {
                continue;
@@ -144,18 +163,13 @@ class EmployeesController extends Controller
 
            //trim data
 
-        // foreach ($columns as $key => &$value) 
-        // {
-        //    $value = preg_replace('/\D/' , '' , $value);
-
-        // }
-
         $data = array_combine($escapedHeader , $columns);
 
+        $emp_code = $data['code'];
         $emp_name = $data['name'];
         $emp_email = $data['email'];
         //Hash::make($data['password'])
-        $emp_password = Hash::make($data['password']);
+        $emp_password = Hash::make($data['code']);
         $emp_mobile = $data['mobile'];
         $emp_g = $data['group'];
         $emp_access = $data['access'];
@@ -163,8 +177,9 @@ class EmployeesController extends Controller
 
       //dd($data);
 
-        $uploaded_emp = new User();
-    
+      
+
+        $uploaded_emp->employee_code = $emp_code;
         $uploaded_emp->name = $emp_name;
         $uploaded_emp->email = $emp_email;
         $uploaded_emp->password = $emp_password;
@@ -172,27 +187,30 @@ class EmployeesController extends Controller
         $uploaded_emp->Djv_Group = $emp_g;
         $uploaded_emp->Djv_Access = $emp_access;
         $uploaded_emp->title = $emp_title;
-
+        $uploaded_emp->username = $emp_code;
+        $uploaded_emp->user_pp = 'NoImage.png';
         
-        $check_user = DB::table('users')->where('email', $emp_email)->get();
-        $check_user_count = DB::table('users')->where('email', $emp_email)->count();
+        $check_user = DB::table('users')->where('employee_code', $emp_code)->get();
+        $check_user_count = DB::table('users')->where('employee_code', $emp_code)->count();
 
         //dd($check_user_count);
 
         if($check_user_count > 0)
         {
-            DB::table('users')->where('email', $emp_email)->update(
+            DB::table('users')->where('employee_code', $emp_code)->update(
                 ['name'=> $emp_name ,
                 'email'=> $emp_email,
                 'password'=> $emp_password ,
                 'mobile'=> $emp_mobile ,
                 'Djv_Group'=> $emp_g,
                 'Djv_Access'=> $emp_access,
-                'title'=> $emp_title
+                'title'=> $emp_title,
+                'employee_code' =>$emp_code,
+                'username' =>$emp_code
                 ]
             );
         }
-
+       
         else
         {
             $uploaded_emp->save();
@@ -200,8 +218,13 @@ class EmployeesController extends Controller
 
 
        }
-       return redirect('/employees')->with('status' , 'Employees file uploaded Successfully !');
-
+       
+       return redirect()->route('employees.index')->with('status' , 'Employees file uploaded Successfully !');
+    }
+    else
+    {
+        return redirect()->back()->with('status' , 'No File Selected !');
+    }
    }
 
    public function showProfile()

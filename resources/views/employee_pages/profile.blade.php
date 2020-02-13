@@ -64,6 +64,6 @@ p{
       <a href="#"><i class="fa fa-linkedin"></i></a>  
       <a href="#"><i class="fa fa-facebook"></i></a> 
     </div>
-    <a href="{{url('employees/'. Auth::user()->id .'/edit')}}" class="edit btn btn-primary">Edit</a>
+    <a href="{{url('employees/'. Auth::user()->id .'/edit')}}" class="edit btn btn-dark">Edit</a>
   </div>
 @endsection

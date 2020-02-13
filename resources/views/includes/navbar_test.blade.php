@@ -1,8 +1,11 @@
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+
 <!-- ============================================================== -->
     <!-- Topbar header - style you can find in pages.scss -->
     <!-- ============================================================== -->
-    <header class="topbar">
-        <nav class="navbar top-navbar navbar-expand-md navbar-dark bg-primary">
+    <header class="topbar header scrolled">
+        <div class="sticky-top">
+        <nav class="navbar top-navbar navbar-expand-md navbar-dark fixed-top bg-primary navbar-toggleable-sm py-3" data-toggle="affix">
             <div class="navbar-header">
                 <!-- This is for the sidebar toggle which is visible on mobile only -->
                 <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
@@ -19,7 +22,7 @@
                 @else
                 <div class="d-none d-md-block text-center">
                     <a style="text-align: center" class="sidebartoggler waves-effect waves-light d-flex align-items-center side-start" href="{{url("home")}}" data-sidebartype="mini-sidebar">
-<span style="font-family:Arial" class="navigation-text ml-3">HR PORTAL</span>                    </a>
+                <span style="font-family:Arial" class="navigation-text ml-3">HR PORTAL</span>                    </a>
                 </div>
                 @endif
                 
@@ -109,6 +112,11 @@
                                         <a href="{{url("employees_notify/search_notification")}}" class="message-item">
 
                                             <h5 style="font-family: Arial; font-size: 16px" class="message-title"><i class="fas fa-bell mr-2 ml-1"></i>Add Employee Notification</h5>
+                                        </a>
+                                        <!-- new to Group-->
+                                        <a href="{{url("employees_notify/group_notification")}}" class="message-item">
+
+                                            <h5 style="font-family: Arial; font-size: 16px" class="message-title"><i class="fas fa-users mr-2 ml-1"></i>Add Group Notification</h5>
                                         </a>
                                         <!-- all -->
                                         <a href="{{url("upload_note")}}" class="message-item">
@@ -296,11 +304,47 @@
                
             </div>
         </nav>
+    </div>
     </header>
+
+    <script>
+        $(document).ready(function() {
+
+var toggleAffix = function(affixElement, scrollElement, wrapper) {
+
+  var height = affixElement.outerHeight(),
+      top = wrapper.offset().top;
+  
+  if (scrollElement.scrollTop() >= top){
+      wrapper.height(height);
+      affixElement.addClass("affix");
+  }
+  else {
+      affixElement.removeClass("affix");
+      wrapper.height('auto');
+  }
+    
+};
+
+$('[data-toggle="affix"]').each(function() {
+  var ele = $(this),
+      wrapper = $('<div></div>');
+  
+  ele.before(wrapper);
+  $(window).on('scroll resize', function() {
+      toggleAffix(ele, $(this), wrapper);
+  });
+  
+  // init
+  toggleAffix(ele, $(window), wrapper);
+});
+
+});
+    </script>
     <!-- ============================================================== -->
     <!-- End Topbar header -->
     <!-- ============================================================== -->
-    <!-- All Jquery -->
+    {{-- <!-- All Jquery -->
     <!-- ============================================================== -->
     <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
@@ -329,15 +373,41 @@
     <script src="{{asset('dist/js/pages/dashboards/dashboard1.js')}}"></script>
     <script src="{{asset('assets/libs/moment/min/moment.min.js')}}"></script>
     <script src="{{asset('assets/libs/fullcalendar/dist/fullcalendar.min.js')}}"></script>
-    <script src="{{asset('dist/js/pages/calendar/cal-init.js')}}"></script>
-    <script>
+    <script src="{{asset('dist/js/pages/calendar/cal-init.js')}}"></script> --}}
+    {{-- <script>
         $('#calendar').fullCalendar('option', 'height', 650);
-    </script>
+    </script> --}}
 
     <style>
     .navbar-nav .nav-link.active,
     .navbar-nav .nav-link:hover {
     background:#7884E4;
     padding: 6px 0;
+}
+
+
+html,body {
+	height:100%;
+    padding-top:50px;
+}
+
+.navbar { 
+  -webkit-transition:padding 0.2s ease;
+  -moz-transition:padding 0.2s ease; 
+  -o-transition:padding 0.2s ease;        
+  transition:padding 0.2s ease;  
+}
+
+.affix {
+  padding-top: 0.2em !important;
+  padding-bottom: 0.2em !important;
+  -webkit-transition:padding 0.2s linear;
+  -moz-transition:padding 0.2s linear;  
+  -o-transition:padding 0.2s linear;         
+  transition:padding 0.2s linear;  
+}
+
+section {
+    min-height:calc(100% - 70px);
 }
     </style>

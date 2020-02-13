@@ -38,7 +38,7 @@
                             @foreach($all_general_notes as $note)
                                 <div class="col-md-6">
                                     <div class="card mb-3" style="min-width: 20rem;margin-left:5px">
-                                        <div style="background-color: #707CD2" class="card-header text-white">
+                                        <div style="color:cornsilk" class="card-header text-white bg-dark">
                                             Note {{$count_b}}
                                         </div>
                                         <div style="background-color:lavender" class="card-body">
@@ -64,15 +64,24 @@
                                             <hr>
                                             <div class="card-text">
                                                     {{-- {{ '/HR_Portal/public/employees_notify/'.$note->id.'/edit' }} --}}
-                                             <a href="{{url('generaklNotifications/'.$note->id.'/edit') }}" class="btn btn-primary d-flex justify-content-center"> Edit Note</a>
+                                             <a href="{{url('generaklNotifications/'.$note->id.'/edit') }}" class="btn btn-dark d-flex justify-content-center"> Edit Note</a>
                                             <hr>
                                             {{-- {{route('employee_note.destroy' , ['user_id'=> $user->id , 'id'=>$note->id])}} --}}
-                                            <form class="delete d-flex justify-content-center"  action="{{route('general_note.destroy' , ['id'=>$note->id])}}" method="POST">
+                                            <form id="delete-form-{{$note->id}}" class="delete d-flex justify-content-center"  action="{{route('general_note.destroy' , ['id'=>$note->id])}}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     
-                                                    <button type="submit" class="btn btn-danger" style="width:100%">Delete Note</button>
+                                                    {{-- <button type="submit" class="btn btn-danger" style="width:100%">Delete Note</button> --}}
                                                 </form>
+                                                <button onclick="if(confirm('Are you sure you want to delete this notification?')){
+                                                    event.preventDefault();
+                                                    document.getElementById('delete-form-{{$note->id}}').submit();
+                                                  }else
+                                                  {
+                                                    event.preventDefault();
+                                                  }
+                                          
+                                                  " class="btn btn-danger" style="width:100%">Delete</button>
                                             </div>
                                         </div>    
                                     </div>
@@ -87,12 +96,12 @@
 
         <div class="col-md-3">
                 <div class="card ml-3" style="max-width: 20rem;">
-                        <div style="background-color: #707CD2" class="card-header text-white"> Stats.</div>
+                        <div style="color:cornsilk" class="card-header text-white bg-dark"> Stats.</div>
                         <div style="background-color:lavender" class="card-body">
                         
                         <p class="card-text"> All General Notes: {{$count}} </p>
                         {{-- {{ '/HR_Portal/public/employees_notify/'.$user->id.'/create' }} --}}
-                        <a href="{{url('generaklNotifications/createNote' )}}" class="btn btn-primary"> Add new note</a>
+                        <a href="{{url('generaklNotifications/createNote' )}}" class="btn btn-dark"> Add new note</a>
 
                         </div>
                     </div>
